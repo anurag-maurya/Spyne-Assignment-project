@@ -1,0 +1,36 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(255) UNIQUE,
+    phone VARCHAR(20) UNIQUE,
+    password VARCHAR(255)
+);
+
+
+CREATE TABLE posts (
+    id SERIAL PRIMARY KEY,
+    text TEXT NOT NULL,
+    image_url TEXT,
+    tags TEXT[],
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE comments (
+    id SERIAL PRIMARY KEY,
+    post_id INT REFERENCES posts(id) ON DELETE CASCADE,
+    comment_by INT REFERENCES users(id) ON DELETE CASCADE,
+    text TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE posts
+ADD COLUMN views INT DEFAULT 0;
+
+
+ALTER TABLE posts
+ADD COLUMN likes INT DEFAULT 0;
+
+ALTER TABLE comments
+ADD COLUMN likes INT DEFAULT 0;
+
